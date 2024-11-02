@@ -1,0 +1,644 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Welcome Section -->
+    <section id="welcome" class="d-flex flex-column align-items-center justify-content-center text-center bg-light"
+        style="height: 120vh; background-image: url(https://img.freepik.com/free-vector/gradient-black-background-with-wavy-lines_23-2149151738.jpg?t=st=1727187925~exp=1727191525~hmac=9aecaaf5e3a58c25c23277c673f9c7e4a49d7c627e6688ded6b69be86b2109bd&w=740);
+        background-repeat:no-repeat; background-size: cover; ">
+        <!-- Hero Section -->
+        <section id="hero" class="d-flex flex-column align-items-center justify-content-center" style="
+    height: 100vh; 
+    background-image: url('path/to/your/image.jpg'); 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    text-align: center; 
+    color: white; 
+">
+            <h1 class="display-4 animate__animated animate__fadeInDown" style="
+        font-size: 6rem; 
+        font-family: 'Oregon LDO Book'; 
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); 
+        margin-bottom: 1rem;
+    ">Welcome to Skill Navigator!</h1>
+
+            <p class="lead animate__animated animate__fadeInUp" style="
+        font-size: 1.5rem; 
+        margin-bottom: 2rem; 
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    ">Empowering you to master your skills, manage courses, and achieve your career goals.</p>
+
+            <a class="btn btn-primary btn-lg animate__animated animate__zoomIn mt-3" href="{% url 'batch_enrollment' %}"
+                role="button" style="
+        background-color: #007bff; 
+        color: white; 
+        border: none; 
+        border-radius: 25px; 
+        padding: 10px 20px; 
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    ">Get Started</a>
+        </section>
+
+        <!-- Cards Section -->
+        
+    </section>
+
+    <!-- Skill Navigator Section -->
+    <section id="skill-navigator"
+        class="d-flex flex-column align-items-center justify-content-center bg-dark text-white"
+        style="height: 120vh; overflow: hidden;">
+        <h2 class="mb-3 animate__animated animate__fadeIn">Skill Navigator</h2>
+        <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+            Track and showcase your skill growth journey. Keep a portfolio of your certifications, internships, and
+            projects to stand out.
+        </p>
+
+        <div class="container mt-4">
+            <div id="skillNavigatorCarousel" class="carousel slide animate__animated animate__zoomIn"
+                data-bs-ride="carousel" style="max-width: 80%;">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://via.placeholder.com/800x400?text=Skill+Navigator" class="d-block w-100"
+                            alt="Skill Tracking">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Track Your Skills</h5>
+                            <p>All your skills and achievements, neatly organized in one place.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://via.placeholder.com/800x400?text=Certification+Portfolio"
+                            class="d-block w-100" alt="Career Management">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Build a Certification Portfolio</h5>
+                            <p>Showcase your learning and achievements with confidence.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#skillNavigatorCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#skillNavigatorCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row text-center mt-5">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="icon-box animate__animated animate__fadeIn">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                    <h5 class="mt-2">Skill Growth</h5>
+                    <p>Visualize your progress and set new targets for continuous improvement.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="icon-box animate__animated animate__fadeIn" style="animation-delay: 0.2s;">
+                    <i class="fas fa-award fa-3x"></i>
+                    <h5 class="mt-2">Achievements</h5>
+                    <p>Earn badges and awards for your accomplishments and share them with others.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="icon-box animate__animated animate__fadeIn" style="animation-delay: 0.4s;">
+                    <i class="fas fa-user-tie fa-3x"></i>
+                    <h5 class="mt-2">Career Development</h5>
+                    <p>Connect your skills with career opportunities and internships tailored for you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="d-flex flex-column align-items-center justify-content-center bg-primary text-white"
+        style="height: 130vh; overflow: hidden;">
+        <h2 class="mb-3 animate__animated animate__fadeIn">Courses</h2>
+        <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+            Enroll in courses tailored to your career goals, track your progress, and take on new learning challenges.
+        </p>
+
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Card 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm animate__animated animate__fadeInUp">
+                        <img src="https://img.freepik.com/free-vector/marketing-students-create-corporate-identity_335657-3061.jpg?t=st=1730473638~exp=1730477238~hmac=cadca62b413819965bd4089e3393377c16b69a2ac593789ed4ad74e4f9c42159&w=740"
+                            class="card-img-top" alt="Skill Tracking" height="220px">
+                        <div class="card-body">
+                            <h5 class="card-title">Skill Tracking</h5>
+                            <p class="card-text">Monitor your skills development and set goals to stay on track with
+                                your learning journey.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm animate__animated animate__fadeInUp"
+                        style="transition: transform 0.2s;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbgFlVtm-qZLJ9J4RJ149JHki8MAlylS1CY0ltDaMoLlFgofm3RstlPPeoXE7C7XrAgNA"
+                            class="card-img-top" alt="Course Management">
+                        <div class="card-body">
+                            <h5 class="card-title">Course Management</h5>
+                            <p class="card-text">Easily manage your courses, assignments, and progress all in one
+                                platform.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm animate__animated animate__fadeInUp">
+                        <img src="https://img.freepik.com/free-vector/illustration-education-concept_53876-17838.jpg?t=st=1730473729~exp=1730477329~hmac=efeea265864f9dcd0580075f22cf617680654dae82d429da70f6082e8ba8bc5b&w=740"
+                            class="card-img-top" alt="Personalized Recommendations">
+                        <div class="card-body">
+                            <h5 class="card-title">Personalized Recommendations</h5>
+                            <p class="card-text">Receive AI-driven course suggestions <br>based on your skills and
+                                <br>interests.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wave-container">
+            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="wave">
+                <path fill="rgba(255, 255, 255, 0.5)"
+                    d="M0,256L30,245.3C60,235,120,213,180,186.7C240,160,300,128,360,138.7C420,149,480,203,540,202.7C600,203,660,149,720,138.7C780,128,840,160,900,176C960,192,1020,192,1080,170.7C1140,149,1200,107,1260,106.7C1320,107,1380,149,1410,170.7L1440,192L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z">
+                </path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- AI Recommender Section -->
+    <section id="ai-recommender"
+        class="d-flex flex-column align-items-center justify-content-center bg-secondary text-white position-relative overflow-hidden"
+        style="height: 130vh;">
+        <div class="wave-animation"></div>
+        <h2 class="mb-3 animate__animated animate__fadeIn">AI Recommender</h2>
+        <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+            Get personalized course and skill recommendations based on your goals and performance. Let AI help guide
+            your learning path.
+        </p>
+        <img src="https://via.placeholder.com/800x400?text=AI+Recommendations"
+            class="img-fluid mt-4 animate__animated animate__zoomIn" alt="AI Recommender">
+
+        <div class="recommendation-cards mt-5">
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Personalized Learning</h5>
+                    <p class="card-text">Receive course recommendations tailored to your learning style and preferences.
+                    </p>
+                </div>
+            </div>
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Skill Progress Tracker</h5>
+                    <p class="card-text">Monitor your progress and adjust your learning path based on your performance.
+                    </p>
+                </div>
+            </div>
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Goal-Oriented Suggestions</h5>
+                    <p class="card-text">Get recommendations that align with your career goals and aspirations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Batch Allocation Section -->
+    <section id="batch-allocation"
+        class="d-flex flex-column align-items-center justify-content-center bg-dark text-white position-relative overflow-hidden"
+        style="height: 130vh;">
+        <h2 class="mb-3 animate__animated animate__fadeIn">Batch Allocation</h2>
+        <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+            Join study batches with peers, access weekly materials, and collaborate on assignments for a more engaging
+            learning experience.
+        </p>
+
+        <div class="wave-animation"></div>
+
+        <div class="batch-cards mt-4 d-flex flex-wrap justify-content-center">
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Weekly Materials</h5>
+                    <p class="card-text">Receive materials tailored for each week to keep you on track.</p>
+                </div>
+            </div>
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Collaborative Learning</h5>
+                    <p class="card-text">Work together with peers on assignments to enhance your understanding.</p>
+                </div>
+            </div>
+            <div class="card custom-card animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <h5 class="card-title">Mentorship Opportunities</h5>
+                    <p class="card-text">Connect with mentors for guidance and support throughout your learning journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="feedback" class="d-flex flex-column align-items-center justify-content-center text-white">
+        <h2 class="mb-3 animate__animated animate__fadeIn">Feedback</h2>
+        <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+            We value your input! Share your experience and help us improve. Your feedback shapes the future of Skill
+            Navigator.
+        </p>
+        <a class="btn btn-light btn-lg mt-4 animate__animated animate__pulse" href="{% url 'feedback' %}">Leave
+            Feedback</a>
+    </section>
+
+    <!-- Reports & Visualization Section -->
+    <section id="reports" class="d-flex justify-content-end align-items-end bg-secondary text-white"
+        style="height: 100vh; position: relative;">
+        <div class="content-wrapper mb-5">
+            <h2 class="mb-3 animate__animated animate__fadeIn">Reports & Visualization</h2>
+            <p class="text-center animate__animated animate__fadeInUp" style="max-width: 600px;">
+                Analyze your learning performance with detailed reports and visuals. Gain insights into your strengths
+                and areas for improvement.
+            </p>
+            <a class="btn btn-light btn-lg mt-4 animate__animated animate__pulse" href="{% url 'user_score_visualization' %}">View
+                Reports</a>
+        </div>
+        <div class="visuals-animation"></div>
+    </section>
+
+</div>
+
+<!-- Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<!-- Custom Styles -->
+<style>
+    /* General Styles */
+    section {
+        height: 100vh;
+        /* Full height for sections */
+        padding: 15px;
+        transition: background-color 0.5s ease;
+    }
+
+    /* Ensure all custom cards inside the #courses section have the proper stacking context */
+    #courses .row {
+        position: relative;
+        /* Ensure it has a stacking context */
+        z-index: 10;
+        /* Ensure cards appear above the wave effect */
+    }
+
+    /* Section Hover Effect */
+    /* section:hover { */
+        /* background-color: rgba(255, 255, 255, 0.05); */
+    /* } */
+
+    /* Heading and Paragraph Styles */
+    h2 {
+        font-size: 3rem;
+        /* Large heading */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        /* Shadow for text */
+    }
+
+    p {
+        font-size: 1.2rem;
+        /* Slightly larger paragraph */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Icon Box Styles */
+    .icon-box {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        color: #fff;
+    }
+
+    .icon-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Card Styles */
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+        overflow: hidden;
+        transition: transform 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card-img-top {
+        border-bottom: 2px solid #007bff;
+        /* Blue border */
+    }
+
+    /* Card Body Styles */
+    .card-body {
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        /* Subtle background */
+        border-radius: 0 0 10px 10px;
+        /* Rounded corners */
+    }
+
+    .custom-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid #007bff;
+        /* Blue border */
+        border-radius: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+        width: 300px;
+        /* Fixed width for cards */
+        position: relative;
+        /* Ensure positioning context */
+        z-index: 10;
+        /* Higher z-index to appear above SVG */
+    }
+
+    .custom-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Recommendation Card Styles */
+    .recommendation-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        /* Space between cards */
+        flex-wrap: wrap;
+        /* Wraps cards on smaller screens */
+    }
+
+    /* Batch Allocation Section */
+    #batch-allocation {
+        background: linear-gradient(to bottom right, #1c1c1c, #3c3c3c);
+        color: #ffffff;
+    }
+
+    #batch-allocation .custom-card {
+        padding: 50px;
+        width: 90%;
+        /* Full width on smaller screens */
+    }
+
+    /* Wave Effect Container */
+    .wave-container {
+        position: absolute;
+        /* Absolute positioning for overlap */
+        bottom: 0;
+        /* Stick to the bottom */
+        left: 0;
+        /* Align to the left */
+        width: 100%;
+        /* Full width */
+        height: 100px;
+        /* Height of the wave */
+        z-index: -1;
+        /* Keeps the wave behind the cards */
+    }
+
+    /* Background SVG */
+    .wave-container svg {
+        width: 100%;
+        /* Ensure SVG fills the container */
+        height: auto;
+        /* Maintain aspect ratio */
+    }
+
+    /* Additional Responsiveness */
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 2.5rem;
+            /* Smaller heading on mobile */
+        }
+
+        .recommendation-cards {
+            flex-direction: column;
+            /* Stack cards vertically on smaller screens */
+            align-items: center;
+            /* Center align cards */
+        }
+
+        .custom-card {
+            width: 90%;
+            /* Full width on smaller screens */
+        }
+    }
+
+    /* Carousel Caption Styles */
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+    }
+
+    /* Carousel Image Styles */
+    .carousel-inner img {
+        height: 400px;
+        /* Keeps this for carousel images */
+        object-fit: cover;
+        /* Keeps the aspect ratio while filling the space */
+    }
+
+
+
+
+    /* Exclusive Styles for Feedback Section */
+    #feedback {
+        height: 100vh;
+        /* Full height */
+        background: linear-gradient(to bottom right, #007bff, #0056b3);
+        /* Gradient background for depth */
+        text-align: center;
+        /* Center text alignment */
+        padding: 20px;
+        /* Padding for breathing room */
+        position: relative;
+        /* Relative positioning for child elements */
+    }
+
+    /* Heading Styles */
+    #feedback h2 {
+        font-size: 3rem;
+        /* Larger heading */
+        font-weight: bold;
+        /* Bold for emphasis */
+        margin-bottom: 20px;
+        /* Space below heading */
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        /* Soft shadow for depth */
+    }
+
+    /* Paragraph Styles */
+    #feedback p {
+        font-size: 1.25rem;
+        /* Larger font size for readability */
+        line-height: 1.6;
+        /* Spacing between lines */
+        color: rgba(255, 255, 255, 0.85);
+        /* Slightly transparent white */
+    }
+
+    /* Button Styles */
+    #feedback .btn {
+        background-color: #ffffff;
+        /* White button background */
+        color: #007bff;
+        /* Button text color */
+        border-radius: 25px;
+        /* Rounded button */
+        padding: 10px 20px;
+        /* Padding for the button */
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Smooth transition for hover effect */
+    }
+
+    /* Button Hover Styles */
+    #feedback .btn:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        /* Light blue background on hover */
+        color: #0056b3;
+        /* Darker blue text on hover */
+    }
+
+    /* Animation Classes */
+    .animate__fadeIn,
+    .animate__fadeInUp,
+    .animate__pulse {
+        animation-duration: 1s;
+        /* Consistent animation duration */
+        animation-fill-mode: both;
+        /* Keep end state of animation */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        #feedback h2 {
+            font-size: 2.5rem;
+            /* Smaller heading on mobile */
+        }
+
+        #feedback p {
+            font-size: 1rem;
+            /* Smaller paragraph font on mobile */
+        }
+    }
+
+
+    /* Exclusive Styles for Reports Section */
+    #reports {
+        background-color: #343a40;
+        /* Dark background */
+        overflow: hidden;
+        /* Prevents overflow of animations */
+        position: relative;
+        /* Ensures positioning for absolute children */
+    }
+
+    /* Content Wrapper Styles */
+    .content-wrapper {
+        text-align: right;
+        /* Align text to the right */
+        z-index: 10;
+        /* Above the animated background */
+        position: relative;
+        /* Positioning context for content */
+    }
+
+    /* Heading Styles */
+    #reports h2 {
+        font-size: 3rem;
+        /* Larger heading */
+        font-weight: bold;
+        /* Bold for emphasis */
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        /* Soft shadow for depth */
+    }
+
+    /* Paragraph Styles */
+    #reports p {
+        font-size: 1.25rem;
+        /* Larger font size for readability */
+        line-height: 1.6;
+        /* Spacing between lines */
+        color: rgba(255, 255, 255, 0.85);
+        /* Slightly transparent white */
+    }
+
+    /* Button Styles */
+    #reports .btn {
+        background-color: #ffffff;
+        /* White button background */
+        color: #007bff;
+        /* Button text color */
+        border-radius: 25px;
+        /* Rounded button */
+        padding: 10px 20px;
+        /* Padding for the button */
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Smooth transition for hover effect */
+    }
+
+    /* Button Hover Styles */
+    #reports .btn:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        /* Light blue background on hover */
+        color: #0056b3;
+        /* Darker blue text on hover */
+    }
+
+    /* Animated Visuals Background */
+    .visuals-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23007bff" d="M0,128L30,133.3C60,139,120,149,180,154.7C240,160,300,160,360,186.7C420,213,480,267,540,288C600,309,660,299,720,288C780,277,840,267,900,245.3C960,224,1020,192,1080,176C1140,160,1200,160,1260,160C1320,160,1380,160,1410,160L1440,160L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path></svg>');
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: 0.5;
+        /* Slightly transparent for a soft effect */
+        animation: wave 4s linear infinite;
+        /* Animation loop */
+    }
+
+    /* Keyframes for Background Animation */
+    @keyframes wave {
+        0% {
+            background-position: 0 0;
+        }
+
+        100% {
+            background-position: 100% 0;
+        }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        #reports h2 {
+            font-size: 2.5rem;
+            /* Smaller heading on mobile */
+        }
+
+        #reports p {
+            font-size: 1rem;
+            /* Smaller paragraph font on mobile */
+        }
+    }
+</style>
+
+<!-- Bootstrap Carousel JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+{% endblock %}

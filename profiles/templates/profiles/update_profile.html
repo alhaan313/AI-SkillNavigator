@@ -1,0 +1,181 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Update Profile</h2>
+
+<!-- Profile Form -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3">
+                {% for field in profile_form %}
+                    <div class="col-md-6">
+                        {{ field.label_tag }}
+                        <div class="form-floating mb-3">
+                            {{ field }}
+                            <!-- Check for errors and display them -->
+                            {% if field.errors %}
+                                <div class="errorlist">
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+                <!-- Courses Section -->
+                <h4 class="mt-5">Courses</h4>
+                <table class="table table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Platform</th>
+                            <th>Course Certificate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coursesTable">
+                        {% for course in courses %}
+                        <tr>
+                            <td><input type="text" name="courses[{{ forloop.counter0 }}][name]" value="{{ course.name }}" class="form-control"></td>
+                            <td><input type="text" name="courses[{{ forloop.counter0 }}][platform]" value="{{ course.platform }}" class="form-control"></td>
+                            <td>
+                                <input type="file" name="courses[{{ forloop.counter0 }}][certificate]" class="form-control" accept="application/pdf">
+                                {% if course.certificate %}
+                                    <p><a href="{{ course.certificate.url }}" target="_blank">View Certificate</a></p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_course' course.id %}" class="btn btn-danger btn-sm">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addCourseRow()">Add Course</button>
+
+                <!-- Internships Section -->
+                <h4 class="mt-5">Internships</h4>
+                <table class="table table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Internship Certificate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="internshipsTable">
+                        {% for internship in internships %}
+                        <tr>
+                            <td><input type="text" name="internships[{{ forloop.counter0 }}][title]" value="{{ internship.title }}" class="form-control"></td>
+                            <td><input type="text" name="internships[{{ forloop.counter0 }}][company]" value="{{ internship.company }}" class="form-control"></td>
+                            <td><input type="date" name="internships[{{ forloop.counter0 }}][start_date]" value="{{ internship.start_date }}" class="form-control"></td>
+                            <td><input type="date" name="internships[{{ forloop.counter0 }}][end_date]" value="{{ internship.end_date }}" class="form-control"></td>
+                            <td>
+                                <input type="file" name="internships[{{ forloop.counter0 }}][certificate]" class="form-control" accept="application/pdf">
+                                {% if internship.certificate %}
+                                    <p><a href="{{ internship.certificate.url }}" target="_blank">View Certificate</a></p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_internship' internship.id %}" class="btn btn-danger btn-sm">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addInternshipRow()">Add Internship</button>
+
+                <!-- Certifications Section -->
+                <h4 class="mt-5">Certifications</h4>
+                <table class="table table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Certification Name</th>
+                            <th>E-Certificates</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certificationsTable">
+                        {% for certification in certifications %}
+                        <tr>
+                            <td><input type="text" name="certifications[{{ forloop.counter0 }}][name]" value="{{ certification.name }}" class="form-control"></td>
+                            <td>
+                                <input type="file" name="certifications[{{ forloop.counter0 }}][certificate]" class="form-control" accept="application/pdf">
+                                {% if certification.certificate %}
+                                    <p><a href="{{ certification.certificate.url }}" target="_blank">View Certificate</a></p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_certification' certification.id %}" class="btn btn-danger btn-sm">Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addCertificationRow()">Add Certification</button>
+
+                <!-- Submit Button -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-large btn-block btn-success">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // JavaScript functions for adding rows dynamically
+    window.addCourseRow = function() {
+        const tableBody = document.getElementById('coursesTable');
+        const rowCount = tableBody.getElementsByTagName('tr').length; // Get current row count for unique naming
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="courses[${rowCount}][name]" class="form-control"></td>
+            <td><input type="text" name="courses[${rowCount}][platform]" class="form-control"></td>
+            <td><input type="file" name="courses[${rowCount}][certificate]" class="form-control" accept="application/pdf"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Remove</button></td>
+        `;
+        tableBody.appendChild(newRow);
+    };
+
+    window.addInternshipRow = function() {
+        const tableBody = document.getElementById('internshipsTable');
+        const rowCount = tableBody.getElementsByTagName('tr').length;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="internships[${rowCount}][title]" class="form-control"></td>
+            <td><input type="text" name="internships[${rowCount}][company]" class="form-control"></td>
+            <td><input type="date" name="internships[${rowCount}][start_date]" class="form-control"></td>
+            <td><input type="date" name="internships[${rowCount}][end_date]" class="form-control"></td>
+            <td><input type="file" name="internships[${rowCount}][certificate]" class="form-control" accept="application/pdf"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Remove</button></td>
+        `;
+        tableBody.appendChild(newRow);
+    };
+
+    window.addCertificationRow = function() {
+        const tableBody = document.getElementById('certificationsTable');
+        const rowCount = tableBody.getElementsByTagName('tr').length;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="certifications[${rowCount}][name]" class="form-control"></td>
+            <td><input type="file" name="certifications[${rowCount}][certificate]" class="form-control" accept="application/pdf"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">Remove</button></td>
+        `;
+        tableBody.appendChild(newRow);
+    };
+});
+</script>
+
+{% endblock %}

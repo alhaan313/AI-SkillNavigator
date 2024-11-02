@@ -1,0 +1,173 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Profile</h2>
+
+<!-- Profile Details -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Profile Details</h5>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Full Name:</th>
+                    <td>{{ profile.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Phone Number:</th>
+                    <td>{{ profile.phone_number }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">LinkedIn Profile:</th>
+                    <td>
+                        {% if profile.linkedin_profile %}
+                        <a href="{{ profile.linkedin_profile }}" target="_blank">{{ profile.linkedin_profile }}</a>
+                        {% else %}
+                        No Link
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">GitHub Profile:</th>
+                    <td>
+                        {% if profile.github_profile %}
+                        <a href="{{ profile.github_profile }}" target="_blank">{{ profile.github_profile }}</a>
+                        {% else %}
+                        No Link
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Programming Languages:</th>
+                    <td>{{ profile.programming_languages }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+    </div>
+</div>
+
+    <!-- Courses Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Courses</h5>
+            {% if courses %}
+            <table class="table table-bordered">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Platform</th>
+                        <th>Course Certificate</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.platform }}</td>
+                        <td>
+                            {% if course.certificate %}
+                                <p><a href="{{ course.certificate.url }}" target="_blank">View Certificate</a></p>
+                            {% else %}
+                                <p>No certificate uploaded.</p>                    
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_course' course.id %}" class="btn btn-danger btn-sm">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center">No courses added yet.</p>
+            {% endif %}
+            <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Manage Courses</a>
+        </div>
+    </div>
+
+    <!-- Internships Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Internships</h5>
+            {% if internships %}
+            <table class="table table-bordered">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Internship Certificate</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for internship in internships %}
+                    <tr>
+                        <td>{{ internship.title }}</td>
+                        <td>{{ internship.company }}</td>
+                        <td>{{ internship.start_date }}</td>
+                        <td>{{ internship.end_date }}</td>
+                        <td>
+                            {% if internship.certificate %}
+                                <p><a href="{{ internship.certificate.url }}" target="_blank">View Certificate</a></p>
+                            {% else %}
+                                <p>No certificate uploaded.</p>                    
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_internship' internship.id %}" class="btn btn-danger btn-sm">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center">No internships added yet.</p>
+            {% endif %}
+            <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Manage Internships</a>
+        </div>
+    </div>
+
+    <!-- Certifications Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Certifications</h5>
+            {% if certifications %}
+            <table class="table table-bordered">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Certification Name</th>
+                        <th>E-Certificates</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for certification in certifications %}
+                    <tr>
+                        <td>{{ certification.name }}</td>
+                        <td>
+                            {% if certification.certificate %}
+                                <p><a href="{{ certification.certificate.url }}" target="_blank">View Certificate</a></p>
+                            {% else %}
+                                <p>No certificate uploaded.</p>                    
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_certification' certification.id %}" class="btn btn-danger btn-sm">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center">No certifications added yet.</p>
+            {% endif %}
+            <a href="{% url 'update_profile' %}" class="btn btn-primary mt-3">Manage Certifications</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

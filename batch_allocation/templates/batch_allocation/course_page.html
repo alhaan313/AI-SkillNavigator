@@ -1,0 +1,349 @@
+<!-- Course Page base html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Navigator App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        html,
+        body {
+            /* height: 80vh; */
+            background-image: url('https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png');
+            /* background-repeat: no-repeat; */
+            /* background-size: cover; */
+            /* Ensure the body takes full height */
+            margin: 0;
+            /* Remove default margins */
+        }
+
+        #content-area {
+            display: flex;
+            flex-direction: column;
+            /* Arrange children in a column */
+        }
+
+        #material-content {
+            flex-grow: 1;
+            /* Make it expand to fill available space */
+            overflow-y: auto;
+            /* Enable scrolling if content overflows */
+            position: absolute;
+            /* Make it absolute to stay in position */
+            top: 0;
+            /* Align to the top */
+            bottom: 0;
+            /* Align to the bottom */
+        }
+
+        .col-md-3 {
+            overflow-y: auto;
+            /* Enable scrolling for sidebar */
+            height: 100vh;
+            /* Full viewport height */
+        }
+
+        /* Custom styles for the navbar */
+        .navbar-brand {
+            font-size: 1.5rem;
+            /* Larger font size for the brand */
+            font-weight: bold;
+        }
+
+        .nav-link {
+            transition: color 0.3s;
+            /* Smooth transition for text color */
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            /* Gold color on hover */
+        }
+
+        .profile-icon {
+            width: 24px;
+            /* Slightly smaller profile icon */
+            height: 24px;
+            /* Slightly smaller profile icon */
+        }
+
+        .navbar-nav {
+            align-items: center;
+            /* Aligns items vertically centered */
+        }
+
+        /* Spinner Animation */
+
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Card Animation */
+        .animated-card {
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.5s forwards;
+            animation-delay: 0.3s;
+            /* Delay for card appearance */
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sidebar and Topic Links */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .list-group-item {
+            transition: background-color 0.3s, transform 0.3s;
+            /* Smooth transition */
+        }
+
+        .list-group-item:hover {
+            background-color: #007bff;
+            /* Change background on hover */
+            color: white;
+            /* Change text color on hover */
+            transform: scale(1.05);
+            /* Slightly scale on hover */
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            /* Fade in effect */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Custom Styles */
+        .alert {
+            transition: opacity 0.5s;
+            /* Smooth opacity transition */
+            opacity: 1;
+        }
+
+        .card {
+            border-radius: 15px;
+            /* Round corners */
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            /* Shadow on hover */
+            transform: scale(1.02);
+            /* Slight scale effect on hover */
+        }
+
+        .animate__animated {
+            animation-duration: 0.5s;
+            /* Adjust animation speed */
+        }
+
+        /* Animate entrance effects */
+        .animate__fadeInDown {
+            animation-duration: 1s;
+        }
+
+        .animate__fadeInUp {
+            animation-duration: 1s;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #007bff, #6610f2);">
+        <a class="navbar-brand text-white" href="{% url 'home' %}">Skill Navigator App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ml-auto navbar-nav">
+                <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                <a class="nav-link text-white" href="{% url 'batch_enrollment' %}">Batch</a>
+                {% if user.is_authenticated %}
+                <a class="nav-link text-white" href="{% url 'course_page' batch.id %}">Course</a>
+                <a class="nav-link text-white" href="{% url 'user_score_visualization'%}">Visual</a>
+                <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'profile' %}">
+                    <img src="https://img.icons8.com/material-outlined/24/ffffff/user.png" alt="Profile"
+                        class="profile-icon">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Display messages
+    <div class="container mt-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div> -->
+    <div class="container mt-4" id="slide-up-card"
+        style="transform: translateY(30px); opacity: 0; transition: transform 0.5s ease-out, opacity 0.5s ease-out;">
+        <div class="card shadow-lg rounded" style="background: #f8f9fa; transition: transform 0.2s, box-shadow 0.2s;"
+            onmouseover="this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.2)'; this.style.transform='scale(1.02)';"
+            onmouseout="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)';">
+            <div class="card-body animate__animated animate__fadeInUp">
+                <div class="d-flex align-items-center mb-4">
+                    <h2 class="mr-3">{{ batch.name }} Course</h2>
+                    <a href="{% url 'generate_topic_test' batch.id selected_topic %}" id="topic-test-link"
+                        class="btn btn-primary" {% if not selected_topic %}style="pointer-events: none; opacity: 0.5;"
+                        {% endif %}>
+                        Topic Test
+                    </a>
+                </div>
+
+                <div class="row">
+                    <!-- Main content area for learning material -->
+                    <div class="col-md-9 d-flex flex-column" id="content-area">
+                        <div id="loading" style="display: none; height: 20px; text-align: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="150 100 600 600" class="spinner">
+                                <radialGradient id="a2" cx=".66" fx=".66" cy=".3125" fy=".3125"
+                                    gradientTransform="scale(1.5)">
+                                    <stop offset="0" stop-color="#363844"></stop>
+                                    <stop offset=".3" stop-color="#363844" stop-opacity=".9"></stop>
+                                    <stop offset=".6" stop-color="#363844" stop-opacity=".6"></stop>
+                                    <stop offset=".8" stop-color="#363844" stop-opacity=".3"></stop>
+                                    <stop offset="1" stop-color="#363844" stop-opacity="0"></stop>
+                                </radialGradient>
+                                <g transform-origin="400 250">
+                                    <circle fill="none" stroke="url(#a2)" stroke-width="12" stroke-linecap="round"
+                                        stroke-dasharray="200 1000" stroke-dashoffset="0" cx="400" cy="250" r="70">
+                                        <animateTransform type="rotate" attributeName="transform" dur="2.6s"
+                                            values="0 400 250; 360 400 250" keyTimes="0; 1" repeatCount="indefinite">
+                                        </animateTransform>
+                                    </circle>
+                                    <circle fill="none" opacity=".2" stroke="#363844" stroke-width="12"
+                                        stroke-linecap="round" cx="400" cy="250" r="70"></circle>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div id="material-content" style="flex-grow: 1; overflow-y: auto;" class="p-3">
+                            {% if material %}
+                            <div class="card animated-card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Learning Material for {{ selected_topic }}</h5>
+                                    <div class="card-text">{{ material|safe }}</div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-info mt-3 fade-in">Select a topic from the left to view the content.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Sidebar for topics -->
+                    <div class="col-md-3 sidebar">
+                        <div class="list-group">
+                            {% for topic in topics %}
+                            <a href="?topic={{ topic.topic_name }}"
+                                class="list-group-item list-group-item-action {% if topic.topic_name == selected_topic %}bg-primary text-white{% else %}list-group-item-light{% endif %} animate__animated animate__fadeIn">
+                                {{ topic.topic_name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const card = document.getElementById('slide-up-card');
+        // Delay to allow for layout calculations
+        setTimeout(() => {
+            card.style.transform = 'translateY(0)'; // Slide up effect
+            card.style.opacity = 1; // Fade in effect
+        }, 100); // Adjust the delay as necessary
+    });
+    
+        $(document).ready(function() {
+            $('.list-group-item').click(function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                var topic = $(this).attr('href').split('=')[1]; // Extract topic name from href
+                var batchId = "{{ batch.id }}"; // Get batch ID from the context
+                $('#loading').show(); // Show loading animation
+                $('#material-content').hide(); // Hide current content
+                // Build the AJAX request URL
+                var requestUrl =
+                    `/batch/${batchId}/course/?topic=${encodeURIComponent(topic)}`; // Use encodeURIComponent for safety
+                $.ajax({
+                    url: requestUrl, // The URL to send the request to
+                    type: 'GET',
+                    success: function(data) {
+                        $('#material-content').html(
+                            data); // Update the content area with the response
+                        $('#loading').show(); // Hide loading animation
+                        $('#material-content').show(); // Show updated content
+                        console.log("Selected Topic after AJAX:", topic);
+                        $('#topic-test-link').attr('href',
+                            `/test/${batchId}/${topic}`); // Update href with selected topic
+                        // Enable the button if topic is selected
+                        if (topic) {
+                            $('#topic-test-link').css({
+                                "pointer-events": "auto",
+                                "opacity": "1"
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#topic-test-link').hide()
+                        $('#material-content').html(
+                            '<p>Error loading content. Please try again.</p>');
+                        $('#loading').hide(); // Hide loading animation
+                        $('#material-content').show(); // Show error message
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

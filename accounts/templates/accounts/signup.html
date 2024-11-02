@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Navigator App</title>
+
+    <!-- Latest Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-..." crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        /* Custom styles for the navbar */
+        .navbar-brand {
+            padding-left: 12px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-link {
+        transition: color 0.3s; /* Smooth transition for text color */
+    }
+    .nav-link:hover {
+        color: #ffd700; /* Gold color on hover */
+    }
+    .profile-icon {
+        width: 24px; /* Profile icon size */
+        height: 24px; /* Profile icon size */
+    }
+
+        .navbar-nav {
+            align-items: center;
+        }
+
+
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+
+
+
+
+        body {
+        /* background-color: #f0f2f5; Light background for contrast */
+        background-image: url('https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png');
+        font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Set font family */
+        color: white;
+    }
+
+
+    .card {
+        border: none; /* Remove border */
+        border-radius: 10px; /* Rounded corners */
+        animation: slideIn 0.5s ease-out; /* Animation for card */
+    }
+
+    .animated-input {
+        transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animation effects */
+    }
+
+    .animated-input:focus {
+        transform: scale(1.02); /* Slightly enlarge input on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect */
+        outline: none; /* Remove outline */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Bright blue color */
+        border: none; /* Remove button border */
+        transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effect */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        transform: scale(1.05); /* Slightly enlarge button on hover */
+    }
+
+    .animated-card {
+        opacity: 0; /* Initial state for fade-in animation */
+        animation: fadeIn 0.6s forwards; /* Fade-in animation for card */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px); /* Slide from top */
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0); /* Final position */
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px); /* Slide from bottom */
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0); /* Final position */
+        }
+    }
+
+    a {
+        text-decoration: none; /* Remove underline from links */
+    }
+
+    a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Navbar -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #007bff, #6610f2);">
+    <a class="navbar-brand text-white" href="{% url 'home' %}">Skill Navigator App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+            <a class="nav-link text-white" href="{% url 'batch_enrollment' %}">Batch</a>
+            {% if user.is_authenticated %}
+                <a class="nav-link text-white" href="{% url 'topper_page'%}">Rankings</a>
+                <a class="nav-link text-white" href="{% url 'user_score_visualization'%}">Visual</a>
+                <a class="nav-link text-white" href="{% url 'feedback'%}">Feedback</a>
+                <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'profile' %}">
+                    <img src="https://img.icons8.com/material-outlined/24/ffffff/user.png" alt="Profile" class="profile-icon">
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Display messages -->
+{% if messages %}
+    <div class="container">
+        <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+            {% for message in messages %}
+                <div class="{% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+{% endif %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card shadow-lg rounded animated-card">
+                <div class="card-body p-4">
+                    <h2 class="text-center" style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: #333;">Sign Up</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="username" style="color: #333;">Username:</label>
+                        <input type="text" name="username" class="form-control mb-3 animated-input" required>
+                        
+                        <label for="password" style="color: #333;">Password:</label>
+                        <input type="password" name="password" class="form-control mb-3 animated-input" required>
+                        
+                        <label for="confirm_password" style="color: #333;">Confirm Password:</label>
+                        <input type="password" name="confirm_password" class="form-control mb-3 animated-input" required>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'login' %}" style="color: #007bff;">Already have an account? Log in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+      <!-- Footer -->
+      <footer class="text-center mt-auto">
+        <p>&copy; 2024 Skill Navigator Application. All rights reserved.</p>
+    </footer>
+</div>
+
+<!-- Latest Bootstrap 5.3 JavaScript Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-..."
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.6/pdfobject.min.js"></script>
+
+</body>
+
+</html>
+

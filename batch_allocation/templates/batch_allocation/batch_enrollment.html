@@ -1,0 +1,192 @@
+<!-- Course Page base html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Navigator App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        html,
+        body {
+            height: 100vh;
+            color: white;
+            /* Default text color */
+            margin: 0;
+            background-image: url('https://coolbackgrounds.io/images/backgrounds/index/gulf-dec0ccde.svg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Custom styles for the navbar */
+        .navbar-brand {
+            font-size: 1.5rem;
+            /* Larger font size for the brand */
+            font-weight: bold;
+        }
+
+        .nav-link {
+            transition: color 0.3s;
+            /* Smooth transition for text color */
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            /* Gold color on hover */
+        }
+
+        .profile-icon {
+            width: 24px;
+            /* Slightly smaller profile icon */
+            height: 24px;
+            /* Slightly smaller profile icon */
+        }
+
+        .navbar-nav {
+            align-items: center;
+            /* Aligns items vertically centered */
+        }
+
+        /* Custom CSS for animations */
+        .animate__animated {
+            animation-duration: 0.5s;
+            /* Adjust animation speed */
+        }
+
+        .btn {
+            margin-right: 25px;
+            transition: transform 0.2s;
+            /* Smooth scaling */
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            /* Scale effect on hover */
+        }
+
+        .card {
+            border-radius: 15px;
+            /* Rounded corners */
+        }
+
+        /* Card body shading */
+        .card-body {
+            background: linear-gradient(white, #f8f9fa);
+            /* Gradient background */
+        }
+
+        /* Optional: add hover effect to card body */
+        .card:hover .card-body {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            /* Shadow on hover */
+            transform: translateY(-3px);
+            /* Slight lift effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth transition */
+        }
+
+        h2,
+        .card-title,
+        p {
+            font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Animate entrance effects */
+        .animate__fadeInDown {
+            animation-duration: 1s;
+        }
+
+        .animate__fadeInUp {
+            animation-duration: 1s;
+        }
+
+        .animate__pulse {
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #007bff, #6610f2);">
+        <a class="navbar-brand text-white" href="{% url 'home' %}">Skill Navigator App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ml-auto navbar-nav">
+                <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                <a class="nav-link text-white" href="{% url 'batch_enrollment' %}">Batch</a>
+                {% if user.is_authenticated %}
+                <a class="nav-link text-white" href="{% url 'course_page' batch.id %}">Course</a>
+                <a class="nav-link text-white" href="{% url 'user_score_visualization'%}">Visual</a>
+                <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'profile' %}">
+                    <img src="https://img.icons8.com/material-outlined/24/ffffff/user.png" alt="Profile"
+                        class="profile-icon">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Display messages -->
+    <div class="container mt-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4 animate__animated animate__fadeInDown"
+            style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: white; font-weight: bold;">
+            Batch Enrollment
+        </h2>
+
+        <div class="card mt-3 shadow-lg animate__animated animate__fadeInUp"
+            style="background: #343a40; border-radius: 15px;">
+            <div class="card-body p-4 shadow-sm rounded" style="background: #495057;">
+                <h5 class="card-title"
+                    style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: white; font-weight: bold;">
+                    Your Allocated Batch</h5>
+                <p style="color: white;"><strong>Batch Name:</strong> {{ batch.name }}</p>
+                <p style="color: white;"><strong>Programming Languages:</strong> {{ batch.programming_languages }}</p>
+                <p style="color: white;"><strong>Batch Size:</strong> {{ batch.current_candidates }}</p>
+                <p style="color: white;"><strong>Batch Capacity:</strong> {{ batch.min_candidates }} -
+                    {{ batch.max_candidates }}</p>
+                <a href="{% url 'generate_test' batch.id %}"
+                    class="btn btn-primary btn-lg animate__animated animate__pulse">Random Test</a>
+                <a href="{% url 'course_page' batch.id %}"
+                    class="btn btn-secondary btn-lg ms-2 animate__animated animate__pulse">Course</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{% if material %}
+    <div class="card">
+        <div class="card-body">
+            <h5>Learning Material for {{ selected_topic }}</h5>
+            <div>{{ material|safe }}</div>
+        </div>
+    </div>
+{% else %}
+    <p>No content available for the selected topic. Please select a different topic.</p>
+{% endif %}

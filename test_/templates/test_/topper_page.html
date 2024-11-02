@@ -1,0 +1,123 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 animate__animated animate__bounceIn">
+        <img src="https://img.icons8.com/ios-filled/50/000000/trophy.png" class="icon" alt="Topper Rankings"> Topper Rankings
+    </h1>
+
+    <!-- Filters for Batch and Topic -->
+    <form method="get" id="filter-form" class="mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="batch" class="font-weight-bold">Select Batch</label>
+                    <select name="batch" id="batch" class="form-control shadow-sm">
+                        <option value="">All Batches</option>
+                        {% for batch in batches %}
+                            <option value="{{ batch.id }}" {% if batch.id|stringformat:"s" == selected_batch_id %}selected{% endif %}>{{ batch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="topic" class="font-weight-bold">Select Topic</label>
+                    <select name="topic" id="topic" class="form-control shadow-sm">
+                        <option value="">All Topics</option>
+                        {% for topic in topics %}
+                            <option value="{{ topic.id }}" {% if topic.id|stringformat:"s" == selected_topic_id %}selected{% endif %}>{{ topic.topic_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Display Top 10 Scorers Table -->
+    <div class="mt-5">
+        <div class="card shadow-sm animate__animated animate__fadeIn">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Top 10 Scorers</h5>
+            </div>
+            <table class="table table-striped table-bordered mb-0">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Student</th>
+                        <th>Score</th>
+                        <th>Attempts</th>
+                        <th>Topic</th>
+                        <th>Last Attempted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scorer in top_scorers %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ scorer.user }}</td>
+                            <td>{{ scorer.score }}</td>
+                            <td>{{ scorer.attempts }}</td>
+                            <td>{{ scorer.topic }}</td>
+                            <td>{{ scorer.last_attempted }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No data available for the selected filters.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Script for animations -->
+<script>
+    document.getElementById('batch').addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
+    
+    document.getElementById('topic').addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
+</script>
+
+<!-- Custom styles -->
+<style>
+    .icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        vertical-align: middle;
+        transition: transform 0.3s;
+    }
+
+    .icon:hover {
+        transform: scale(1.1);
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+        opacity: 0.1;
+        z-index: 1;
+    }
+
+    th, td {
+        position: relative;
+        z-index: 2; /* Ensure text is above the background */
+    }
+</style>
+
+{% endblock %}

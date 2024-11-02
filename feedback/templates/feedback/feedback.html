@@ -1,0 +1,69 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4 animate__animated animate__fadeIn">Feedback</h2>
+    <form method="post" class="animate__animated animate__fadeInUp">
+        {% csrf_token %}
+        
+        <div class="form-group mb-3">
+            <label for="course_quality">Course Quality:</label>
+            {{ form.course_quality }}
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="test_quality">Test Quality:</label>
+            {{ form.test_quality }}
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="website_experience">Website Experience:</label>
+            {{ form.website_experience }}
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="additional_feedback">Additional Feedback:</label>
+            {{ form.additional_feedback }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg animate__animated animate__pulse">Submit Feedback</button>
+        <a href="{% url 'feedback_summary' %}" class="btn btn-primary btn-lg animate__animated animate__pulse">Feedback Summary</a>
+    </form>
+    <br>
+
+</div>
+
+<style>
+    /* Custom CSS for animations and styles */
+    .animate__animated {
+        animation-duration: 0.5s; /* Adjust animation speed */
+    }
+
+    .form-group {
+        transition: transform 0.2s; /* Smooth scaling */
+    }
+
+    .form-group:hover {
+        transform: translateY(-3px); /* Lift effect on hover */
+    }
+
+    .btn {
+        margin: 10px;
+        transition: transform 0.2s; /* Smooth scaling for button */
+    }
+
+    .btn:hover {
+        transform: scale(1.05); /* Scale effect on button hover */
+    }
+
+    /* Optional: Style for the form elements */
+    input, select, textarea {
+        transition: box-shadow 0.3s; /* Smooth shadow transition */
+    }
+
+    input:focus, select:focus, textarea:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow on focus */
+        border-color: #007bff; /* Bootstrap primary color */
+    }
+</style>
+{% endblock %}

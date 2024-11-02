@@ -1,0 +1,136 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded animated-card">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-3" style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: #333; font-size: 1.8em;">Test for {{ batch.name }}</h2>
+                    <h3 class="text-center mb-3" style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: #555; font-size: 1.5em;">Topic: {{ questions.0.topic }}</h3>
+                    <h4 class="text-center mb-4" style="font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; color: #777; font-size: 1.3em;">Test Questions</h4>
+                                    <form method="post" action="{% url 'submit_test' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="batch_id" value="{{ batch.id }}">
+                        {% for question in questions %}
+                        <div class="question-box mb-4 animated-box">
+                            <p class="question-text">{{ forloop.counter }}. {{ question.question }}</p>
+                            <div class="options">
+                                {% for key, value in question.options.items %}
+                                <label class="option-label">
+                                    <input type="radio" name="answer_{{ forloop.parentloop.counter }}" value="{{ key }}" class="option-input">
+                                    <span class="option-text">{{ key }}) {{ value }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block">Submit Test</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa; /* Light background for contrast */
+        font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Set font family */
+    }
+
+    .animated-card {
+        opacity: 0; /* Initial state for fade-in animation */
+        animation: fadeIn 0.6s forwards; /* Fade-in animation for card */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px); /* Slide from top */
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0); /* Final position */
+        }
+    }
+
+    .card {
+        border: none; /* Remove border */
+        border-radius: 10px; /* Rounded corners */
+        background: rgba(255, 255, 255, 0.95); /* Slightly translucent background */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .question-box {
+        padding: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        opacity: 0; /* Initial state for fade-in animation */
+        animation: fadeIn 0.6s forwards; /* Fade-in animation for question boxes */
+    }
+
+    .question-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .question-text {
+        font-size: 1.2em; /* Increase question font size */
+        margin-bottom: 10px;
+    }
+
+    /* Style for options */
+    .option-label {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        margin-bottom: 8px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .option-label:hover {
+        background-color: #e2e6ea;
+        transform: scale(1.02);
+    }
+
+    .option-input {
+        display: none;
+    }
+
+    .option-input:checked + .option-text {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .option-text {
+        width: 100%;
+        padding: 10px;
+        text-align: left;
+        transition: background-color 0.3s;
+    }
+
+    /* Style for the submit button */
+    .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1em;
+        transition: background-color 0.3s, transform 0.2s; /* Transition for button hover */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        transform: scale(1.05); /* Slightly enlarge button on hover */
+    }
+</style>
+
+
+{% endblock %}

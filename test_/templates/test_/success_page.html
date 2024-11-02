@@ -1,0 +1,269 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <h4 class="text-center">Sidebar</h4>
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active animate__animated" href="#"
+                    onclick="showSection('scoreSection', this)">Test Results</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="#"
+                    onclick="showSection('scoreDistributionSection', this)">Score Distribution</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="#"
+                    onclick="showSection('yourScoresSection', this)">Your Scores</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="#"
+                    onclick="showSection('incorrectTopicsSection', this)">Incorrect Topics</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="#"
+                    onclick="showSection('incorrectAnswersSection', this)">Incorrect Answers</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="#"
+                    onclick="showSection('recommendedCoursesSection', this)">Recommended Courses</a>
+                    <a class="list-group-item list-group-item-action animate__animated" href="{% url 'generate_report_pdf' %}" target="_blank">View Report</a>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            <!-- Test Results Section -->
+            <div id="scoreSection" class="section fade-in">
+                <h1>Test Results</h1>
+                <p>Your score: <strong>{{ score }} out of {{ total_questions }}</strong></p>
+            </div>
+
+            <!-- Pie Chart Section -->
+            <div id="scoreDistributionSection" style="display: none;" class="section fade-in">
+                <h2>Your Score Distribution</h2>
+                <div class="chart-container" style="position: relative; height:50vh; width:50vw">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+                <script>
+                    // Prepare data for the chart
+                    const ctx = document.getElementById('scoreChart').getContext('2d');
+                    const score = '{{ score|default:0 }}';
+                    const totalQuestions = '{{ total_questions|default:1 }}';
+                    const incorrectAnswers = totalQuestions - score;
+                    const chartData = (totalQuestions === 0 || score < 0) ? [0, 1] : [score, incorrectAnswers];
+                    const scoreChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Correct Answers', 'Incorrect Answers'],
+                            datasets: [{
+                                label: 'Score Distribution',
+                                data: chartData,
+                                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Score Distribution'
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- Your Scores Section -->
+            <div id="yourScoresSection" style="display: none;" class="section fade-in">
+                <h2>Your Scores</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Topic Name</th>
+                            <th>Highest Score</th>
+                            <th>Attempts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if user_scores %}
+                        {% for user_score in user_scores %}
+                        <tr>
+                            <td>{{ user_score.topic.topic_name }}</td>
+                            <td>{{ user_score.score }}</td>
+                            <td>{{ user_score.attempts }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">No scores available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Incorrect Topics Section -->
+            <div id="incorrectTopicsSection" style="display: none;" class="section fade-in">
+                <h2>Incorrect Topics</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Incorrect Topic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if incorrect_topics %}
+                        {% for topic in incorrect_topics %}
+                        <tr>
+                            <td>{{ topic }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="text-center">No incorrect topics.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- AI Recommended Courses Section -->
+            <div id="recommendedCoursesSection" style="display: none;" class="section fade-in">
+                <h2>AI Recommended Courses Based on Your Test Results</h2>
+                <div class="row">
+                    {% for item in combined_courses %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="{{ item.image_link|default:'https://via.placeholder.com/300x200' }}"
+                                class="card-img-top" alt="{{ item.course.course_name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.course.course_name }}</h5>
+                                <p class="card-text">Platform: {{ item.course.platform }}</p>
+                                <a href="{{ item.course.course_link }}" class="btn btn-primary" target="_blank">View
+                                    Course</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>No recommended courses available.</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Incorrect Answers Section -->
+            <div id="incorrectAnswersSection" style="display: none;" class="section fade-in">
+                <h2>Incorrect Answers</h2>
+                {% if incorrect_questions %}
+                <button class="btn btn-danger mt-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#incorrectQuestions" aria-expanded="false" aria-controls="incorrectQuestions">
+                    View Incorrect Questions
+                </button>
+
+                <div class="collapse mt-2" id="incorrectQuestions">
+                    <table class="table table-hover mt-2">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Question</th>
+                                <th>Correct Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for question in incorrect_questions %}
+                            <tr>
+                                <td>{{ question.topic }}</td>
+                                <td>{{ question.question }}</td>
+                                <td>{{ question.correct_answer }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>No incorrect answers.</th>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(sectionId, element) {
+        // Hide all sections
+        const sections = ['scoreSection', 'scoreDistributionSection', 'yourScoresSection',
+            'incorrectTopicsSection', 'recommendedCoursesSection', 'incorrectAnswersSection'
+        ];
+        sections.forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
+        // Show the selected section
+        const selectedSection = document.getElementById(sectionId);
+        selectedSection.style.display = 'block';
+        selectedSection.classList.add('animate__animated', 'animate__fadeIn');
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.list-group-item');
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        // Add active class to the clicked button
+        element.classList.add('active');
+    }
+    // Initialize by showing the first section
+    showSection('scoreSection', document.querySelector('.list-group-item.active'));
+</script>
+
+<!-- Custom styles for better visuals -->
+<style>
+    .section {
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        background-color: #fff;
+    }
+
+    .list-group-item {
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .list-group-item:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.02);
+    }
+
+    .card {
+        transition: transform 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,250 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center animated fadeInDown"> {{ user.username }}'s Test Performance Overview</h2>
+
+    <!-- Grid layout for charts -->
+    <div class="row mt-4">
+        <!-- Bar Chart Card -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card chart-card shadow-sm fadeInUp">
+                <div class="card-header text-white bg-info">
+                    <h5 class="card-title mb-0">Scores by Topic</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:40vh; width:100%">
+                        <canvas id="scoreBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Chart Card -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card chart-card shadow-sm fadeInUp">
+                <div class="card-header text-white bg-primary">
+                    <h5 class="card-title mb-0">Score Trends Over Time</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:40vh; width:100%">
+                        <canvas id="scoreTrendLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart Card -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card chart-card shadow-sm fadeInUp">
+                <div class="card-header text-white bg-warning">
+                    <h5 class="card-title mb-0">Attempt Distribution Across Topics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:40vh; width:100%">
+                        <canvas id="attemptPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scatter Plot Card -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card chart-card shadow-sm fadeInUp">
+                <div class="card-header text-white bg-success">
+                    <h5 class="card-title mb-0">Attempts vs. Scores</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:40vh; width:100%">
+                        <canvas id="attemptsVsScoresChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data from Django
+    const topics = JSON.parse('{{ topics|escapejs }}');
+    const scores = JSON.parse('{{ scores|escapejs }}');
+    const attempts = JSON.parse('{{ attempts|escapejs }}');
+
+    // Bar Chart for Scores by Topic
+    const scoreBarChartCtx = document.getElementById('scoreBarChart').getContext('2d');
+    new Chart(scoreBarChartCtx, {
+        type: 'bar',
+        data: {
+            labels: topics,
+            datasets: [{
+                label: 'Scores',
+                data: scores,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top' },
+                tooltip: { enabled: true },
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Line Chart for Score Trends Over Time
+    const scoreTrendLineChartCtx = document.getElementById('scoreTrendLineChart').getContext('2d');
+    new Chart(scoreTrendLineChartCtx, {
+        type: 'line',
+        data: {
+            labels: topics,
+            datasets: [{
+                label: 'Scores Over Time',
+                data: scores,
+                fill: false,
+                borderColor: 'rgba(153, 102, 255, 1)',
+                backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                tension: 0.3,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top' },
+                tooltip: { enabled: true },
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Pie Chart for Attempts Distribution Across Topics
+    const attemptPieChartCtx = document.getElementById('attemptPieChart').getContext('2d');
+    new Chart(attemptPieChartCtx, {
+        type: 'pie',
+        data: {
+            labels: topics,
+            datasets: [{
+                label: 'Attempts',
+                data: attempts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top' },
+                tooltip: { enabled: true },
+            }
+        }
+    });
+
+    // Scatter Plot for Attempts vs. Scores
+    const attemptsVsScoresChartCtx = document.getElementById('attemptsVsScoresChart').getContext('2d');
+    const scatterData = scores.map((score, index) => ({ x: attempts[index], y: score, topic: topics[index] }));
+    new Chart(attemptsVsScoresChartCtx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Attempts vs. Scores',
+                data: scatterData,
+                backgroundColor: 'rgba(75, 192, 192, 1)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                showLine: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Number of Attempts' } },
+                y: { title: { display: true, text: 'Score' }, beginAtZero: true }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Topic: ${context.dataset.data[context.dataIndex].topic} - Score: ${context.dataset.data[context.dataIndex].y} - Attempts: ${context.dataset.data[context.dataIndex].x}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Fade-in Animation for Charts
+    const fadeInElements = document.querySelectorAll('.fadeInUp');
+    fadeInElements.forEach((el, index) => {
+        el.style.opacity = 0;
+        el.style.transition = 'opacity 1s ease-in-out, transform 0.5s ease';
+        setTimeout(() => {
+            el.style.opacity = 1;
+            el.style.transform = 'translateY(0)';
+        }, index * 300); // Stagger the fade-in effect
+    });
+
+    // Additional entrance animation for the title
+    const titleElement = document.querySelector('h2');
+    titleElement.style.opacity = 0;
+    titleElement.style.transform = 'translateY(-20px)';
+    setTimeout(() => {
+        titleElement.style.opacity = 1;
+        titleElement.style.transform = 'translateY(0)';
+        titleElement.style.transition = 'opacity 1s ease-in-out, transform 0.5s ease';
+    }, 200);
+</script>
+
+<style>
+    /* CSS for Fade-in Animation */
+    .fadeInUp {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    .fadeInDown {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    .animated {
+        transition: all 0.5s ease-in-out;
+    }
+
+    /* Card hover effect */
+    .chart-card {
+        transition: transform 0.3s ease;
+    }
+    .chart-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Background Animation */
+    body {
+        color: white;
+        background: url('https://img.freepik.com/free-vector/technology-wire-mesh-network-connection-digital-background_1017-28407.jpg?t=st=1730563444~exp=1730567044~hmac=c672ae89d7abef708c6276cc033016457c973f67e2a96eee47ae0a9d8947940f&w=826') no-repeat center center fixed;
+        background-size: cover;
+        /* background-attachment: fixed; */
+    }
+    
+    @keyframes gradient-animation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>
+
+{% endblock %}
