@@ -10,10 +10,6 @@ The **AI-Powered Personalized Learning System** solves this problem by using AI 
 
 ## Features
 
-### Video Demo
-Watch the video demonstration of the project here:  
-[Project Video](https://github-production-user-asset-6210df.s3.amazonaws.com/91521461/393635521-0c5fac9b-b8af-4f1b-b636-c56b3519742e.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241208%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241208T191211Z&X-Amz-Expires=300&X-Amz-Signature=305a3cb2c102eaf9ead4e7c1b283b6039b0b191211e4167d0f7ae19156675fcc&X-Amz-SignedHeaders=host)
-
 ### Key Features:
 
 1. **Login Page**  
