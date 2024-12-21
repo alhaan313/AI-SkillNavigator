@@ -3,14 +3,18 @@ import google.generativeai as genai
 import random
 import json
 import re
+import os
 from urllib.parse import urlparse
 from markdown import markdown
 from bs4 import BeautifulSoup
 import markdown
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Configure API Key
-genai.configure(api_key="Your API Key")
+api_key = os.getenv('API_KEY')
+genai.configure(api_key=api_key)
 
 def generate_mcq_question(topic):
     """
